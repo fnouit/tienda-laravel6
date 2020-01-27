@@ -49491,6 +49491,72 @@ module.exports = function(module) {
 
 /***/ }),
 
+/***/ "./resources/js/apicategory.js":
+/*!*************************************!*\
+  !*** ./resources/js/apicategory.js ***!
+  \*************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+var apicategory = new Vue({
+  el: '#apicategory',
+  data: {
+    nombre: '',
+    slug: '',
+    div_slug_disponible: '',
+    div_slug_class: 'badge badge-danger',
+    div_slug_aparecer: false,
+    btn_terms: false
+  },
+  computed: {
+    generarSlug: function generarSlug() {
+      var _char = {
+        "á": "a",
+        "é": "e",
+        "í": "i",
+        "ó": "o",
+        "ú": "u",
+        "Á": "A",
+        "É": "E",
+        "Í": "I",
+        "Ó": "O",
+        "Ú": "U",
+        "ñ": "n",
+        "Ñ": "N",
+        " ": "-",
+        "_": "-"
+      };
+      var expr = /[áéíóúÁÉÍÓÚÑñ_ ]/g;
+      this.slug = this.nombre.trim().replace(expr, function (e) {
+        return _char[e];
+      }).toLowerCase();
+      return this.slug; // return this.nombre.trim().replace(/ /g,'-').toLowerCase();
+    }
+  },
+  methods: {
+    getCategory: function getCategory() {
+      var _this = this;
+
+      var url = 'api/category/' + this.slug;
+      axios.get(url).then(function (response) {
+        _this.div_slug_disponible = response.data;
+
+        if (_this.div_slug_disponible === '¡Este slug ya existe...!') {
+          _this.div_slug_class = 'badge badge-danger';
+          _this.btn_terms = true;
+        } else {
+          _this.div_slug_class = 'badge badge-success';
+          _this.btn_terms = false;
+        }
+
+        _this.div_slug_aparecer = true; // console.log(this.div_slug_disponible);
+      });
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./resources/js/app.js":
 /*!*****************************!*\
   !*** ./resources/js/app.js ***!
@@ -49527,6 +49593,8 @@ var app = new Vue({
   el: '#app'
 });
 
+__webpack_require__(/*! ./apicategory */ "./resources/js/apicategory.js");
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -49544,8 +49612,7 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
  */
 
 try {
-  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"];
-  window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"]; // window.$ = window.jQuery = require('jquery');
 
   __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 } catch (e) {}
