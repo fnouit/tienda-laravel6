@@ -15,11 +15,17 @@ Route::get('/', function () {
     return view('tienda.index');
 
 });
-Route::get('/admin', function () {
-    return view('admin.category.create');
-
-});
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+// Route::get('/admin/crear', 'Admin/AdminController@create')->name('admin.create');
+
+Route::get('/admin', function () {
+    return view('plantilla.admin');
+});
+
+Route::resource('admin/category','Admin\AdminCategoryController')->names('admin.category');
+Route::get('cancelar/{ruta}',function ($ruta){
+    return redirect()->route('admin.category.index')->with('cancelar','ha sido cancelado con éxito.');
+})->name('cancelar');

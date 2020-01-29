@@ -4,9 +4,10 @@ const apicategory = new Vue({
         nombre : '',
         slug : '',
         div_slug_disponible : '',
-        div_slug_class : 'badge badge-danger',
+        div_slug_class : 'badge badge-pill badge-danger',
         div_slug_aparecer : false,
-        btn_terms : false
+        btn_terms : false,
+        div_slug_div : false
     },
     computed: {
         generarSlug : function () {
@@ -28,19 +29,32 @@ const apicategory = new Vue({
     },
     methods: {
         getCategory() {
-            let url = 'api/category/'+this.slug;
-            axios.get(url).then(response => {
-                this.div_slug_disponible = response.data;
-                if (this.div_slug_disponible === '¡Este slug ya existe...!') {
-                    this.div_slug_class = 'badge badge-danger';
-                    this.btn_terms = true;
-                } else {
-                    this.div_slug_class = 'badge badge-success';
-                    this.btn_terms = false;
-                }
+            if (this.slug) {
+                let url = '/api/category/'+this.slug;
+                axios.get(url).then(response => {
+                    this.div_slug_disponible = response.data;
+                    if (this.div_slug_disponible === '¡Esta categoría ya existe...!') {
+                        this.div_slug_class = 'badge badge-pill badge-danger';
+                        this.btn_terms = true;
+                    } else {
+                        this.div_slug_class = 'badge badge-pill badge-success';
+                        this.btn_terms = false;
+                    }
+                    this.div_slug_aparecer = true;
+                    // console.log(this.div_slug_disponible);
+                })                
+            } else {
+                this.div_slug_class="badge badge-pill badge-info";
+                this.div_slug_disponible="Tienes que ingresar una categoría";
+                this.btn_terms = true;
                 this.div_slug_aparecer = true;
-                // console.log(this.div_slug_disponible);
-            })
+            }
+        }
+    },
+    mounted() {
+        if (document.getElementById('editar').innerHTML) {
+            this.nombre = document.getElementById('nombretemp').innerHTML;
+            this.btn_terms = true;
         }
     },
 });

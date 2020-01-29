@@ -49504,9 +49504,10 @@ var apicategory = new Vue({
     nombre: '',
     slug: '',
     div_slug_disponible: '',
-    div_slug_class: 'badge badge-danger',
+    div_slug_class: 'badge badge-pill badge-danger',
     div_slug_aparecer: false,
-    btn_terms: false
+    btn_terms: false,
+    div_slug_div: false
   },
   computed: {
     generarSlug: function generarSlug() {
@@ -49537,20 +49538,33 @@ var apicategory = new Vue({
     getCategory: function getCategory() {
       var _this = this;
 
-      var url = 'api/category/' + this.slug;
-      axios.get(url).then(function (response) {
-        _this.div_slug_disponible = response.data;
+      if (this.slug) {
+        var url = '/api/category/' + this.slug;
+        axios.get(url).then(function (response) {
+          _this.div_slug_disponible = response.data;
 
-        if (_this.div_slug_disponible === '¡Este slug ya existe...!') {
-          _this.div_slug_class = 'badge badge-danger';
-          _this.btn_terms = true;
-        } else {
-          _this.div_slug_class = 'badge badge-success';
-          _this.btn_terms = false;
-        }
+          if (_this.div_slug_disponible === '¡Esta categoría ya existe...!') {
+            _this.div_slug_class = 'badge badge-pill badge-danger';
+            _this.btn_terms = true;
+          } else {
+            _this.div_slug_class = 'badge badge-pill badge-success';
+            _this.btn_terms = false;
+          }
 
-        _this.div_slug_aparecer = true; // console.log(this.div_slug_disponible);
-      });
+          _this.div_slug_aparecer = true; // console.log(this.div_slug_disponible);
+        });
+      } else {
+        this.div_slug_class = "badge badge-pill badge-info";
+        this.div_slug_disponible = "Tienes que ingresar una categoría";
+        this.btn_terms = true;
+        this.div_slug_aparecer = true;
+      }
+    }
+  },
+  mounted: function mounted() {
+    if (document.getElementById('editar').innerHTML) {
+      this.nombre = document.getElementById('nombretemp').innerHTML;
+      this.btn_terms = true;
     }
   }
 });

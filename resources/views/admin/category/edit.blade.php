@@ -1,10 +1,13 @@
 @extends('plantilla.admin')
-@section('titulo', 'Crear Categoría')
+@section('titulo', 'Editar Categoría')
 @section('contenido')
 
-<form action="{{route('admin.category.store')}}" method="post">
+<form action="{{route('admin.category.update',$categoria->id)}}" method="post">
     @csrf
+    @method('PUT')
     <div id="apicategory">
+        <span style="display:none;" id="editar">{{$editar}}</span>
+        <span style="display:none;" id="nombretemp">{{$categoria->nombre}}</span>
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
@@ -23,12 +26,12 @@
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input v-model="nombre" type="text" @blur="getCategory" @focus="div_slug_aparecer = false"
-                        name="nombre" id="nombre" class="form-control">
+                        name="nombre" id="nombre" class="form-control" placeholder="{{$categoria->nombre}}">
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
                     <textarea name="descripcion" id="descripcion" cols="30" rows="10" class="form-control" cols="30"
-                        rows="5"></textarea>
+                        rows="5">{{$categoria->descripcion}}</textarea>
                 </div>
                 <div class="form-group">
                     <label for="slug">Slug</label>

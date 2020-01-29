@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
+
 class AdminController extends Controller
 {
     /**
@@ -24,7 +25,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        //
+        
     }
 
     /**
@@ -34,8 +35,8 @@ class AdminController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {
-        //
+    {        
+
     }
 
     /**
@@ -55,9 +56,9 @@ class AdminController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($slug)
     {
-        //
+        
     }
 
     /**
@@ -69,7 +70,7 @@ class AdminController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
     }
 
     /**

@@ -22,7 +22,7 @@ class CategoryController extends Controller
         $category->slug = 'mujer';
         $category->save();
         return $category; */
-        return Category::count();
+        return Category::all();
     }
 
     /**
@@ -45,9 +45,9 @@ class CategoryController extends Controller
     public function show($slug)
     {
         if (Category::where('slug',$slug)->first()) {
-            return '¡Este slug ya existe...!';
+            return '¡Esta categoría ya existe...!';
         } else {
-            return '¡Este slug está disponible...!';
+            return '¡Esta categoría está disponible...!';
         }
     }
 
