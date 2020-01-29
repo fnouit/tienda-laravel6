@@ -1,5 +1,10 @@
 @extends('plantilla.admin')
 @section('titulo', 'Administración de Categoría')
+
+@section('breadcrumb')
+<li class="breadcrumb-item active">@yield('titulo')</li>
+@endsection
+
 @section('contenido')
 <!-- /.row -->
 <div class="row">
@@ -9,17 +14,21 @@
                 <h3 class="card-title">Sección de categorías</h3>
 
                 <div class="card-tools">
-                    <div class="input-group input-group-sm" style="width: 150px;">
-                        <input type="text" name="table_search" class="form-control float-right" placeholder="Buscar...">
 
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
-                        </div>
-                    </div>
+                    <form action="" method="get">
+                        <div class="input-group input-group-sm" style="width: 150px;">
+                            <input type="text" name="nombre" class="form-control float-right" placeholder="Buscar..." value="{{request()->get('nombre')}}" >
+
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-default"><i class="fas fa-search"></i></button>
+                            </div>
+                        </div>                    
+                    </form>
+
                 </div>
             </div>
             <!-- /.card-header -->
-            <div class="card-body table-responsive p-0" style="height: 700px;">
+            <div class="card-body table-responsive p-0" style="height: 800px;">
                 <a href="{{route('admin.category.create')}}" class="m-2 float-right btn btn-success btn-sm"><i
                         class="fas fa-plus"></i>&nbspCrear nueva</a>
                 <table class="table table-head-fixed">
@@ -95,7 +104,7 @@
 
             <div class="card-footer">
                 <div class="form-group">
-                    {{ $categorias->links() }}
+                    {{ $categorias->appends($_GET)->links() }}
                 </div>
             </div><!-- /.card-footer-->
 

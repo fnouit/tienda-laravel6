@@ -13,9 +13,11 @@ class AdminCategoryController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $categorias = Category::orderBy('id', 'desc')->paginate(9);
+        $nombre = $request->get('nombre');
+
+        $categorias = Category::where('nombre','like',"%$nombre%")->orderBy('id', 'desc')->paginate(3);
         return view('admin.category.index',compact('categorias'));
     }
 
