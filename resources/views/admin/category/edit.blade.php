@@ -34,7 +34,7 @@
                 <div class="form-group">
                     <label for="nombre">Nombre</label>
                     <input v-model="nombre" type="text" @blur="getCategory" @focus="div_slug_aparecer = false"
-                        name="nombre" id="nombre" class="form-control" placeholder="{{$categoria->nombre}}">
+                        name="nombre" id="nombre" class="form-control">
                 </div>
                 <div class="form-group">
                     <label for="descripcion">Descripción</label>
@@ -50,8 +50,6 @@
                         <div v-if="div_slug_aparecer" v-bind:class="div_slug_class" v-text="div_slug_disponible"></div>
                     </h5>
                 </div>
-
-
             </div>
             <!-- /.card-body -->
             <div class="card-footer">
@@ -60,8 +58,7 @@
                         <i class="fas fa-trash"></i> Cancelar
                     </a>
 
-                    <input type="submit" value="Guardar" class="btn btn-primary float-right" id="guardar"
-                        :disabled="btn_terms">
+                    <input type="submit" value="Guardar" class="btn btn-primary float-right" id="guardar">
                 </div>
             </div><!-- /.card-footer-->
         </div><!-- /.card -->

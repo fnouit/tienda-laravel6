@@ -8,6 +8,10 @@ use App\Category;
 
 class AdminCategoryController extends Controller
 {
+    # Constructor para verificar si esta autentificado
+    public function __construct() {
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -39,6 +43,17 @@ class AdminCategoryController extends Controller
      */
     public function store(Request $request)
     {
+        $mensaje = [
+            'nombre.required' => 'El campo nombre es requerido',
+            'descripcion.required'=>'Es necesario ingresar al menos una descripcion',
+        ];
+        $reglas = [
+            'nombre' => 'required|unique:categories,nombre',
+            'descripcion' => 'required',
+        ];
+
+        $this->validate($request, $reglas, $mensaje);
+
         $categoria = new Category;
 
         $categoria->nombre = $request->nombre;
@@ -91,6 +106,18 @@ class AdminCategoryController extends Controller
     public function update(Request $request, $id)
     {
         $categoria = Category::findOrFail($id);
+        
+        $mensaje = [
+            'nombre.required' => 'El campo nombre es requerido',
+            // 'descripcion.required'=>'Es necesario ingresar al menos una descripcion'
+        ];
+        $reglas = [
+            'nombre' => 'required|unique:categories,nombre,'.$categoria->id,
+            // 'descripcion' => 'required,'.$categoria->id
+        ];
+        
+        $this->validate($request, $reglas, $mensaje);
+        
         $categoria->fill($request->all())->save();
         // return $categoria;
         return redirect()->route('admin.category.index')->with('datos','ha sido actualizado con éxito.');
