@@ -32,3 +32,4 @@ const app = new Vue({
 });
 
 require('./apicategory');
+require('./apiproduct');

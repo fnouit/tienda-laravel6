@@ -29,7 +29,7 @@
             </div>
             <!-- /.card-header -->
             <div class="card-body table-responsive p-0" style="height: 800px;">
-                <a href="{{route('admin.category.create')}}" class="m-2 float-right btn btn-success btn-sm"><i
+                <a href="{{route('admin.product.create')}}" class="m-2 float-right btn btn-success btn-sm"><i
                         class="fas fa-plus"></i>&nbspCrear nueva</a>
                 <table class="table table-head-fixed">
                     <thead>
@@ -74,15 +74,15 @@
 
                             <td class="project-actions text-right">
                                 <form class="form-inline"
-                                    action="{{route('admin.category.destroy',[$producto->slug])}}" method="POST">
+                                    action="{{route('admin.product.destroy',[$producto->slug])}}" method="POST">
                                     @method('DELETE')
                                     @csrf
                                     <a class="btn btn-primary btn-sm"
-                                        href="{{route('admin.category.show',[$producto->slug])}}">
+                                        href="{{route('admin.product.show',[$producto->slug])}}">
                                         <i class="fas fa-folder"></i> Ver
                                     </a>&nbsp;
                                     <a class="btn btn-info btn-sm"
-                                        href="{{route('admin.category.edit',[$producto->slug])}}">
+                                        href="{{route('admin.product.edit',[$producto->slug])}}">
                                         <i class="fas fa-pencil-alt"></i> Editar
                                     </a>&nbsp;
                                     <button type="button" class="btn btn-danger  btn-sm" data-toggle="modal"

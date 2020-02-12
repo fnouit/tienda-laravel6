@@ -753,7 +753,7 @@
 
       @if( session('datos') )
         <div class="alert alert-success alert-dismissible fade show" role="alert">
-          La <strong>categoria</strong>... {{session('datos')}}
+          El <strong>registro</strong>... {{session('datos')}}
           <button type="button" class="close" data-dismiss="alert" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
