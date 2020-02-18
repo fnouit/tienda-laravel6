@@ -42,21 +42,32 @@ class AdminProductController extends Controller
     public function store(Request $request)
     {
         
-        /*
-        *"descripcion_corta": null,
-  "descripcion_larga": null,
-        */
-
         $mensaje = [
             'nombre.required' => 'El campo nombre es requerido',
             'descripcion_corta.required'=>'Es necesario ingresar al menos una descripcion',
         ];
         $reglas = [
             'nombre' => 'required|unique:products,nombre',
+            'slug' => 'required|unique:products,slug',
             'descripcion_corta' => 'required',
+            'imagenes.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048'
         ];
 
         $this->validate($request, $reglas, $mensaje);
+
+
+        $urlimagenes = [];
+
+        if($request->hasFile('imagenes')) {
+            $imagenes = $request->file('imagenes');
+            foreach($imagenes as $img) {
+                $nombre = time().'_'.$img->getClientOriginalName();
+                $ruta = public_path().'/imagenes';
+                $img->move($ruta,$nombre);
+                $urlimagenes[]['url'] = '/imagenes/'.$nombre;
+            }
+        }
+
 
         $producto = new Product;
 
@@ -88,8 +99,11 @@ class AdminProductController extends Controller
         }
 
 
-
         $producto->save();
+
+        $producto->images()->createMany($urlimagenes);
+
+        // return $producto->images;
 
         return redirect()->route('admin.product.index')->with('datos','ha sido creado con éxito.');
 
@@ -97,6 +111,10 @@ class AdminProductController extends Controller
         
         # protejiendo el Model Category -> protected $fillable
         // return Category::create($request->all);
+
+        
+
+
     }
 
     /**
