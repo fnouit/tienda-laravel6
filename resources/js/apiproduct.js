@@ -10,7 +10,15 @@ const apiproduct = new Vue({
         btn_terms : false,
         div_slug_div : false,
         activeColor : "",
-        fontWeight : "bold"
+        fontWeight : "bold",
+
+        // Variables de precio 
+        precioanterior : 0,
+        precioactual : 0,
+        descuento : 0,
+        porcentajededescuento : 0,
+        descuento_mensaje : '0'        
+
     },
     computed: {
         generarSlug : function () {
@@ -28,7 +36,50 @@ const apiproduct = new Vue({
             return this.slug;
 
             // return this.nombre.trim().replace(/ /g,'-').toLowerCase();
-        }
+        },
+        generarDescuento : function () {
+            if (this.porcentajededescuento > 100) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error...',
+                    text: 'No puedes poner un valor mayo a 100',
+                });
+                this.porcentajededescuento = 100;
+                this.descuento = (this.precioanterior * this.porcentajededescuento) / 100;
+                this.precioactual = this.precioanterior - this.descuento;
+                this.descuento_mensaje = 'Este producto tiene el 100% de descuento';
+                return this.descuento_mensaje;
+            } else 
+            
+            if (this.porcentajededescuento < 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error...',
+                    text: 'No puedes poner un valor negativo',
+                });
+                this.porcentajededescuento = 0;
+                this.descuento = (this.precioanterior * this.porcentajededescuento) / 100;
+                this.precioactual = this.precioanterior - this.descuento;
+                this.descuento_mensaje = '';
+                return this.descuento_mensaje;
+            } else 
+
+            if (this.porcentajededescuento > 0) {
+                this.descuento = (this.precioanterior * this.porcentajededescuento) / 100;
+                this.precioactual = this.precioanterior - this.descuento;
+                this.descuento_mensaje = 'Hay un descuento de $US ' + this.descuento ;
+                if (this.porcentajededescuento == 100) {
+                    this.descuento_mensaje = 'Este producto tiene el 100% de descuento';
+                } else {
+                    this.descuento_mensaje = 'Hay un descuento de $US ' + this.descuento ;
+                }
+                return this.descuento_mensaje;
+            } else {
+                this.descuento = '';
+                this.precioactual = this.precioanterior;
+                return this.descuento_mensaje;                    
+            }
+        }        
     },
     methods: {
         getProduct() {

@@ -1,12 +1,40 @@
 @extends('plantilla.admin')
 @section('titulo', 'Crear Producto')
 @section('breadcrumb')
-<li class="breadcrumb-item"><a href="{{route('admin.product.index')}}">Productos</a></li>
-<li class="breadcrumb-item active">@yield('titulo')</li>
+    <li class="breadcrumb-item"><a href="{{route('admin.product.index')}}">Productos</a></li>
+    <li class="breadcrumb-item active">@yield('titulo')</li>
 @endsection
 
-@section('contenido')
 
+@section('estilos')
+    <!-- Select2 -->
+    <link rel="stylesheet" href="/adminlte/plugins/select2/css/select2.min.css">
+    <link rel="stylesheet" href="/adminlte/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+@endsection
+
+@section('script')
+    <!-- Select2 -->
+    <script src="/adminlte/plugins/select2/js/select2.full.min.js"></script>
+    
+    <script src="/adminlte/ckeditor/ckeditor.js"></script>
+
+
+    <script>
+        $(function () {
+            //Initialize Select2 Elements
+            $('#category_id').select2()
+
+            //Initialize Select2 Elements
+            /* $('.select2bs4').select2({
+            theme: 'bootstrap4'
+            }); */
+        });    
+    </script>
+@endsection
+
+
+
+@section('contenido')
 <div id="apiproduct">
     <form action="{{ route('admin.product.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -62,7 +90,7 @@
                             <div class="col-md-6">
                                 <div class="form-group">
                                     <label>Categoria</label>
-                                    <select name="category_id" class="form-control select2" style="width: 100%;">
+                                    <select name="category_id" class="form-control" style="width: 100%;">
                                         @foreach($categorias as $categoria)
                                             @if ($loop->first) <!-- #Loop para que aparesca primer registro -->
                                                 <option value="{{ $categoria->id }}" selected="selected">{{ $categoria->nombre }}</option>
@@ -103,102 +131,101 @@
     
                     </div>
                 </div><!-- /.card -->
-    
-                <div class="card card-success">
-                    <div class="card-header">
-                        <h3 class="card-title">Sección de Precios</h3>
-                    </div><!-- /.card-header -->
-                    
-                    <div class="card-body">
-                        <div class="row">
-    
-    
-    
-                            <div class="col-md-3">
-                                <div class="form-group">
-    
-                                    <label>Precio anterior</label>
-    
-    
-    
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
-                                        </div>
-                                        <input class="form-control" type="number" id="precioanterior" name="precioanterior"
-                                            min="0" value="0" step=".01">
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+<!-- 
+   =========================================== 
+-->
+
+
+
+
+
+            <div class="card card-success">
+                <div class="card-header">
+                    <h3 class="card-title">Sección de Precios</h3>
+                </div><!-- /.card-header -->
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Precio anterior</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
                                     </div>
-    
+                                    <input v-model="precioanterior" class="form-control" type="number" id="precioanterior" name="precioanterior"
+                                        min="0" value="0" step=".01">
                                 </div>
-                                <!-- /.form-group -->
-    
-                            </div>
-                            <!-- /.col -->
-    
-    
-    
-                            <div class="col-md-3">
-                                <div class="form-group">
-    
-                                    <label>Precio actual</label>
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">$</span>
-                                        </div>
-                                        <input class="form-control" type="number" id="precioactual" name="precioactual"
-                                            min="0" value="0" step=".01">
+                            </div><!-- /.form-group -->
+                        </div><!-- /.col -->
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+
+                                <label>Precio actual</label>
+                                <div class="input-group">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">$</span>
                                     </div>
-    
-                                    <br>
-                                    <span id="descuento"></span>
-                                </div>
-                                <!-- /.form-group -->
-    
-                            </div>
-                            <!-- /.col -->
-    
-    
-    
-    
-                            <div class="col-md-6">
-                                <div class="form-group">
-    
-                                    <label>Porcentaje de descuento</label>
-                                    <div class="input-group">
-                                        <input class="form-control" type="number" id="porcentajededescuento"
-                                            name="porcentajededescuento" step="any" min="0" min="100" value="0">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">%</span>
-                                        </div>
-    
-                                    </div>
-    
-                                    <br>
-                                    <div class="progress">
-                                        <div id="barraprogreso" class="progress-bar" role="progressbar" style="width: 0%;"
-                                            aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">0%</div>
+                                    <input v-model="precioactual" class="form-control" type="number" id="precioactual" name="precioactual"
+                                        min="0" value="0" step=".01">
+                                </div><br>
+                                <span id="descuento" v-text="generarDescuento">
+                                    
+                                </span>
+                            </div><!-- /.form-group -->
+                        </div><!-- /.col -->
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Porcentaje de descuento</label>
+                                <div class="input-group">
+                                    <input v-model="porcentajededescuento" class="form-control" type="number" id="porcentajededescuento"
+                                        name="porcentajededescuento" step="any" min="0" max="100" value="0">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text">%</span>
                                     </div>
                                 </div>
-                                <!-- /.form-group -->
-    
+                                <br>
+                                <div class="progress">
+                                    <div id="barraprogreso" class="progress-bar" role="progressbar" :style="{width: porcentajededescuento+'%'}"
+                                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">@{{porcentajededescuento}}%</div>
+                                </div>
                             </div>
-                            <!-- /.col -->
-    
-    
+                            <!-- /.form-group -->
                         </div>
-                        <!-- /.row -->
-    
-    
+                        <!-- /.col -->
                     </div>
-                    <!-- /.card-body -->
-                    <div class="card-footer">
-    
-                    </div>
+                    <!-- /.row -->
                 </div>
-                <!-- /.card -->
+                <!-- /.card-body -->
+                <div class="card-footer">
+
+                </div>
+            </div>
+            <!-- /.card -->
     
     
-    
+<!-- 
+   =========================================== 
+-->    
     
     
     
@@ -209,14 +236,14 @@
     
                         <div class="card card-primary">
                             <div class="card-header">
-                                <h3 class="card-title">Descripciones del producto</h3>
+                                <h3 class="card-title ">Descripciones del producto</h3>
                             </div>
                             <div class="card-body">
                                 <!-- Date dd/mm/yyyy -->
                                 <div class="form-group">
                                     <label>Descripción corta:</label>
     
-                                    <textarea class="form-control" name="descripcion_corta" id="descripcion_corta"
+                                    <textarea class="form-control ckeditor" name="descripcion_corta" id="descripcion_corta"
                                         rows="3"></textarea>
     
                                 </div>
@@ -225,7 +252,7 @@
                                 <div class="form-group">
                                     <label>Descripción larga:</label>
     
-                                    <textarea class="form-control" name="descripcion_larga" id="descripcion_larga"
+                                    <textarea class="form-control ckeditor" name="descripcion_larga" id="descripcion_larga"
                                         rows="5"></textarea>
     
                                 </div>
@@ -252,7 +279,7 @@
                                 <div class="form-group">
                                     <label>Especificaciones:</label>
     
-                                    <textarea class="form-control" name="especificaciones" id="especificaciones"
+                                    <textarea class="form-control ckeditor" name="especificaciones" id="especificaciones"
                                         rows="3"></textarea>
     
                                 </div>
@@ -261,7 +288,7 @@
                                 <div class="form-group">
                                     <label>Datos de interes:</label>
     
-                                    <textarea class="form-control" name="datos_de_interes" id="datos_de_interes"
+                                    <textarea class="form-control ckeditor" name="datos_de_interes" id="datos_de_interes"
                                         rows="5"></textarea>
     
                                 </div>
@@ -394,7 +421,14 @@
     
     
     
-    
+
+
+
+
+
+
+
+
     
     
     

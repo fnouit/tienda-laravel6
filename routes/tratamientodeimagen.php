@@ -94,7 +94,44 @@
         $producto = $producto->find(2);
         return $producto->images_count;
     #
+    #11 LAZY carga diferida
+        $producto = App\Product::find(6);
+        $imagen = $producto->image;
+        $categoria = $producto->category;
+    #
+    #12 carga previa (eager loading())
+        $usuario = App\User::with('images')->get();
+        return $usuario;
 
+        $usuario = App\User::with('image')->find(1);
+        return $usuario->image->url;        
+    #
+    #13 carga previa (eager loading())
+        $producto = App\Product::with('images')->get();
+        return $producto;
+    #
+    #14 carga previa de multiples relaciones
+        $producto = App\Product::with('images','category')->get();
+        return $producto->category->slug;
+    #
+    #15 carga previa de multiples relaciones de producto en especifico 
+        $producto = App\Product::with('images','category')->find(2);
+        return $producto->category->slug;
+    #
+    #16 carga previa de multiples relaciones de producto en especifico con un campo en especifico 
+        $producto = App\Product::with('images:id,imageable_id,url','category')->find(6);
+        return $producto;
+    #
+    #17 Eliminar una imagen 
+        $producto = App\Product::find(5);
+        $producto->images[0]->delete();
+        return $producto;
+    #
+    #18 Eliminar todas las imagen de un producto
+        $producto = App\Product::find(5);
+        $producto->images->delete();
+        return $producto;
+    #
 
 
 

@@ -6,6 +6,26 @@
 @endsection
 
 @section('contenido')
+
+<style type="text/css">
+
+    .table1 {
+        width : 100%;
+        margin-bottom : 1rem;
+        color : #212529;
+        text-align : center;
+    }
+
+    .table1 td, .table1 th {
+        padding : .75rem;
+        vertical-align : center;
+        border-top : 1px solid #dee2e6;
+    }
+
+</style>
+
+
+
 <!-- /.row -->
 <div class="row">
     <div class="col-12">
@@ -31,19 +51,18 @@
             <div class="card-body table-responsive p-0" style="height: 800px;">
                 <a href="{{route('admin.product.create')}}" class="m-2 float-right btn btn-success btn-sm"><i
                         class="fas fa-plus"></i>&nbspCrear nueva</a>
-                <table class="table table-head-fixed">
+                <table class="table1 table-head-fixed">
                     <thead>
                         <tr>
                             <th>ID</th>
+                            <th>Imagen</th>
                             <th>Nombre</th>
                             <th>Categoría</th>
                             <th>Precio</th>
-                            <th>Slug</th>
-                            <th>Descripcion</th>
                             <th>Estado</th>
                             <th>Activo</th>
-                            <th>Sliderprincipal</th>
-                            <th>Cantidad</th>
+                            <th>Slider principal</th>
+
                             <th colspan="3">Configuración</th>
                         </tr>
                     </thead>
@@ -53,23 +72,23 @@
 
 
                             <td>{{$producto->id}}</td>
+                            <td>
+                                
+                                @if ($producto->images->count()<=0)
+                                    <img class="img-thumbnail rounded-circle" src="/imagenes/avatar.png" alt="" style="height:100px; width:100px">
+                                @else 
+                                    <img class="img-thumbnail rounded-circle" src="{{$producto->images->random()->url}}" alt="" style="height:100px; width:100px">
+                                @endif
+
+
+
+                            </td>
                             <td>{{$producto->nombre}}</td>
                             <td>{{$producto->category->nombre}}</td>
                             <td>${{$producto->precio_actual}}</td>
-                            <td>{{$producto->slug}}</td>
-                            <td>{{$producto->descripcion_corta}}</td>
                             <td>{{$producto->estado}}</td>
                             <td>{{$producto->activo}}</td>
                             <td>{{$producto->sliderprincipal}}</td>
-                            <td>{{$producto->cantidad}}</td>
-
-
-
-
-
-
-
-
 
 
                             <td class="project-actions text-right">

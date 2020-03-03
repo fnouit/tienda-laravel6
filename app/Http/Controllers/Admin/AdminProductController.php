@@ -18,7 +18,7 @@ class AdminProductController extends Controller
     {
         $nombre = $request->get('nombre');
 
-        $productos = Product::where('nombre','like',"%$nombre%")->orderBy('id', 'desc')->paginate(3);
+        $productos = Product::with('images','category')->where('nombre','like',"%$nombre%")->orderBy('id', 'desc')->paginate(3);
         return view('admin.product.index',compact('productos'));
     }
 
@@ -55,7 +55,6 @@ class AdminProductController extends Controller
 
         $this->validate($request, $reglas, $mensaje);
 
-
         $urlimagenes = [];
 
         if($request->hasFile('imagenes')) {
@@ -67,7 +66,6 @@ class AdminProductController extends Controller
                 $urlimagenes[]['url'] = '/imagenes/'.$nombre;
             }
         }
-
 
         $producto = new Product;
 
@@ -98,7 +96,6 @@ class AdminProductController extends Controller
              $producto->sliderprincipal = "No";
         }
 
-
         $producto->save();
 
         $producto->images()->createMany($urlimagenes);
@@ -111,10 +108,6 @@ class AdminProductController extends Controller
         
         # protejiendo el Model Category -> protected $fillable
         // return Category::create($request->all);
-
-        
-
-
     }
 
     /**

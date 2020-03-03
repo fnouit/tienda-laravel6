@@ -4,13 +4,17 @@ use App\Product;
 use App\Category;
 use App\Image;
 
-/* #Hacer pruebas con las imagenes
+ #Hacer pruebas con las imagenes
     Route::get('/prueba', function () {
-        
 
+        #18 Eliminar todas las imagen de un producto
+            $producto = App\Product::find(1);
+            $producto->images()->delete();
+            return $producto;
+        #
 
     });
-
+/*
 
     #Mostrar resultados
     Route::get('/resultados', function () {
